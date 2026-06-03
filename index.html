@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomber Jacket Collection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+.products {
+    width: 90vw;
+    
+    position: relative;
+    background: transparent;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+}
+        body {
+            font-family: 'Roboto', sans-serif;
+            
+            color: #222;
+            scroll-snap-type: y mandatory;
+            overflow-x: hidden;
+        }
+
+        .product-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            position: relative;
+            scroll-snap-align: start;
+            background: white;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8%;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100vw;
+            align-items: center;
+        }
+
+        .image-container {
+            position: relative;
+            height: 82vh;
+            overflow: visible;
+            border-radius: 0px;
+            /*box-shadow: 0 15px 40px rgba(0,0,0,0.15);*/
+            cursor: zoom-in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        /* Zoom μόνο όταν είσαι πάνω στην εικόνα */
+        .image-container:hover .product-image {
+            transform: scale(1.45);
+            transition-duration: 0.5s;   /* ομαλό όταν μπαίνεις */
+        }
+
+        /* Πολύ γρήγορη επιστροφή όταν φεύγεις */
+        .image-container:not(:hover) .product-image {
+            transform: scale(1);
+            transition-duration: 0.2s;   /* άμεση αποχώρηση */
+        }
+
+        .product-info h1 {
+            font-size: 3.1rem;
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+        }
+
+        .code {
+            color: #555;
+            font-size: 1.05rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 2.5rem;
+        }
+
+        .colors {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 2.5rem;
+        }
+
+        .color-dot {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 3px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .color-dot:hover {
+            border-color: #e60012;
+            transform: scale(1.15);
+        }
+
+        .btn {
+            padding: 16px 42px;
+            background: #07283F;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #15527d;
+            transform: translateY(-3px);
+        }
+
+        .scroll-prompt {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #777;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="products">
+    <!-- Προϊόν 1 -->
+    <section class="product-section">
+        <div class="product-container">
+            <div class="image-container">
+                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-2-scaled.webp" 
+                     class="product-image" 
+                     alt="Bomber Jacket">
+            </div>
+            <div class="product-info">
+                <h1>Bomber Jacket</h1>
+                <p class="code">Κωδ. 2611103011</p>
+                <div class="price">22,00 €</div>
+                <p class="description">
+                    Μπουφάν bomber με ελαφριά γέμιση από υψηλής ποιότητας πολυεστέρα δύο στρωμάτων. 
+                    Άνετο, ζεστό και μοντέρνο.
+                </p>
+                <div class="colors">
+                    <div class="color-dot" style="background:#0a1f3d"></div>
+                    <div class="color-dot" style="background:#555"></div>
+                    <div class="color-dot" style="background:#1a2f4d"></div>
+                </div>
+                <button class="btn">Προσθήκη στο Καλάθι</button>
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- Προϊόν 2 -->
+    <section class="product-section">
+        <div class="product-container">
+            <div class="image-container">
+                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-1-scaled.webp" 
+                     class="product-image" 
+                     alt="Bomber Jacket">
+            </div>
+            <div class="product-info">
+                <h1>Lightweight Bomber</h1>
+                <p class="code">Κωδ. 2611103022</p>
+                <div class="price">24,50 €</div>
+                <p class="description">
+                    Ελαφρύ bomber jacket ιδανικό για μεταβατικές εποχές.
+                </p>
+                <div class="colors">
+                    <div class="color-dot" style="background:#3a4f2d"></div>
+                    <div class="color-dot" style="background:#444"></div>
+                </div>
+                <button class="btn">Προσθήκη στο Καλάθι</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Προϊόν 3 -->
+    <section class="product-section">
+        <div class="product-container">
+            <div class="image-container">
+                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-3-scaled.webp" 
+                     class="product-image" 
+                     alt="Bomber Jacket">
+            </div>
+            <div class="product-info">
+                <h1>Premium Bomber Jacket</h1>
+                <p class="code">Κωδ. 2611103033</p>
+                <div class="price">28,90 €</div>
+                <p class="description">
+                    Πολυτελές bomber με premium υλικά και άριστη ποιότητα.
+                </p>
+                <div class="colors">
+                    <div class="color-dot" style="background:#112233"></div>
+                    <div class="color-dot" style="background:#222"></div>
+                </div>
+                <button class="btn">Προσθήκη στο Καλάθι</button>
+            </div>
+        </div>
+    </section>
+    </div>
+
+</body>
+</html>
