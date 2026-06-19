@@ -1,240 +1,244 @@
+
 <!DOCTYPE html>
 <html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bomber Jacket Collection</title>
+    <title>Multi-Product Scroll Zoom</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-.products {
-    width: 90vw;
-    
-    position: relative;
-    background: transparent;
-    display: flex;
-    
-    justify-content: center;
-    align-items: center;
-    flex-flow: column;
-}
-        body {
-            font-family: 'Roboto', sans-serif;
-            
-            color: #222;
-            scroll-snap-type: y mandatory;
-            overflow-x: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #111111;
+            zoom: 130%;
         }
 
-        .product-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 8%;
+        .scroll-container {
+            height: 250vh;
             position: relative;
-            scroll-snap-align: start;
-            background: white;
         }
 
-        .product-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8%;
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100vw;
-            align-items: center;
-        }
-
-        .image-container {
-            position: relative;
-            height: 82vh;
-            overflow: visible;
-            border-radius: 0px;
-            /*box-shadow: 0 15px 40px rgba(0,0,0,0.15);*/
-            cursor: zoom-in;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
-        }
-
-        .product-image {
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Zoom μόνο όταν είσαι πάνω στην εικόνα */
-        .image-container:hover .product-image {
-            transform: scale(1.45);
-            transition-duration: 0.5s;   /* ομαλό όταν μπαίνεις */
+        .product-info-bar {
+            background-color: #ffffff;
+            height: 10vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid #eeeeee;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
-        /* Πολύ γρήγορη επιστροφή όταν φεύγεις */
-        .image-container:not(:hover) .product-image {
-            transform: scale(1);
-            transition-duration: 0.2s;   /* άμεση αποχώρηση */
+        .brand-label {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #777777;
         }
 
-        .product-info h1 {
-            font-size: 3.1rem;
-            line-height: 1.1;
-            margin-bottom: 0.6rem;
-        }
-
-        .code {
-            color: #555;
-            font-size: 1.05rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .price {
+        .product-title {
             font-size: 2.5rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
             
-            margin-bottom: 2rem;
         }
 
-        .description {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #444;
-            margin-bottom: 2.5rem;
-        }
-
-        .colors {
+        .color-selector {
             display: flex;
-            gap: 16px;
-            margin-bottom: 2.5rem;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .color-label {
+            font-size: 0.9rem;
+            color: #555555;
+            margin-right: 5px;
         }
 
         .color-dot {
-            width: 38px;
-            height: 38px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            border: 3px solid #ddd;
             cursor: pointer;
-            transition: all 0.3s;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease;
         }
 
         .color-dot:hover {
-            border-color: #e60012;
             transform: scale(1.15);
         }
 
-        .btn {
-            padding: 16px 42px;
-            background: #07283F;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            
-            cursor: pointer;
-            transition: 0.3s;
+        .color-dot.active {
+            border-color: #111111;
+            transform: scale(1.1);
         }
 
-        .btn:hover {
-            background: #15527d;
-            transform: translateY(-3px);
+        .media-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 4vh;
+           
         }
 
-        .scroll-prompt {
+        .scroll-hint {
             position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #777;
-            font-size: 1rem;
+            top: 25px;
+            left: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999999;
+            opacity: 0;
+        }
+
+        .product-image-container {
+            width: 320px;
+            height: 380px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transform-origin: center top;
+            will-change: width, height;
+            transition: width 0.1s ease-out, height 0.1s ease-out;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .footer-space {
+            height: 40vh;
+            background-color: #ffffff;
         }
     </style>
 </head>
 <body>
-<div class="products">
-    <!-- Προϊόν 1 -->
-    <section class="product-section">
-        <div class="product-container">
-            <div class="image-container">
-                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-2-scaled.webp" 
-                     class="product-image" 
-                     alt="Bomber Jacket">
-            </div>
-            <div class="product-info">
-                <h1>Bomber Jacket</h1>
-                <p class="code">Κωδ. 2611103011</p>
-                <div class="price">22,00 €</div>
-                <p class="description">
-                    Μπουφάν bomber με ελαφριά γέμιση από υψηλής ποιότητας πολυεστέρα δύο στρωμάτων. 
-                    Άνετο, ζεστό και μοντέρνο.
-                </p>
-                <div class="colors">
-                    <div class="color-dot" style="background:#0a1f3d"></div>
-                    <div class="color-dot" style="background:#555"></div>
-                    <div class="color-dot" style="background:#1a2f4d"></div>
-                </div>
-                <button class="btn">Προσθήκη στο Καλάθι</button>
-            </div>
-        </div>
-        
-    </section>
 
-    <!-- Προϊόν 2 -->
-    <section class="product-section">
-        <div class="product-container">
-            <div class="image-container">
-                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-1-scaled.webp" 
-                     class="product-image" 
-                     alt="Bomber Jacket">
-            </div>
-            <div class="product-info">
-                <h1>Lightweight Bomber</h1>
-                <p class="code">Κωδ. 2611103022</p>
-                <div class="price">24,50 €</div>
-                <p class="description">
-                    Ελαφρύ bomber jacket ιδανικό για μεταβατικές εποχές.
-                </p>
-                <div class="colors">
-                    <div class="color-dot" style="background:#3a4f2d"></div>
-                    <div class="color-dot" style="background:#444"></div>
+    <!-- ΠΡΟΪΟΝ 1 -->
+    <div class="scroll-container" id="product-1">
+        <div class="sticky-wrapper">
+            <div class="product-info-bar" class="info-bar">
+                
+                <div class="product-title">Cotton Fleece Brave Explorer</div>
+                <div class="color-selector">
+                    <span class="color-label">Χρώμα:</span>
+                    <div class="color-dot active" style="background-color: #2b4c3f;"></div>
+                    <div class="color-dot" style="background-color: #1c1c1c;"></div>
+                    <div class="color-dot" style="background-color: #8c7d70;"></div>
                 </div>
-                <button class="btn">Προσθήκη στο Καλάθι</button>
+            </div>
+            <div class="media-area">
+                <div class="scroll-hint" class="scroll-hint"></div>
+                <div class="product-image-container" class="image-container">
+                    <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611102005-1.webp" alt="Product 1">
+                </div>
             </div>
         </div>
-    </section>
-
-    <!-- Προϊόν 3 -->
-    <section class="product-section">
-        <div class="product-container">
-            <div class="image-container">
-                <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611103011-3-scaled.webp" 
-                     class="product-image" 
-                     alt="Bomber Jacket">
-            </div>
-            <div class="product-info">
-                <h1>Premium Bomber Jacket</h1>
-                <p class="code">Κωδ. 2611103033</p>
-                <div class="price">28,90 €</div>
-                <p class="description">
-                    Πολυτελές bomber με premium υλικά και άριστη ποιότητα.
-                </p>
-                <div class="colors">
-                    <div class="color-dot" style="background:#112233"></div>
-                    <div class="color-dot" style="background:#222"></div>
-                </div>
-                <button class="btn">Προσθήκη στο Καλάθι</button>
-            </div>
-        </div>
-    </section>
     </div>
+
+    <!-- ΠΡΟΪΟΝ 2 -->
+    <div class="scroll-container" id="product-2">
+        <div class="sticky-wrapper">
+            <div class="product-info-bar" class="info-bar">
+               
+                <div class="product-title">Classic Denim Jacket</div>
+                <div class="color-selector">
+                    <span class="color-label">Χρώμα:</span>
+                    <div class="color-dot active" style="background-color: #4b6584;"></div>
+                    <div class="color-dot" style="background-color: #2f3542;"></div>
+                </div>
+            </div>
+            <div class="media-area">
+                <div class="scroll-hint" class="scroll-hint"></div>
+                <div class="product-image-container" class="image-container">
+                    <img src="https://www.explorer.gr/wp-content/uploads/2026/01/2611102037-1.webp" alt="Product 2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-space"></div>
+
+    <script>
+        const products = [
+            { id: 'product-1' },
+            { id: 'product-2' }
+        ];
+
+        window.addEventListener('scroll', () => {
+            products.forEach(prod => {
+                const section = document.getElementById(prod.id);
+                const infoBar = section.querySelector('.product-info-bar');
+                const scrollHint = section.querySelector('.scroll-hint');
+                const imageContainer = section.querySelector('.product-image-container');
+
+                const rect = section.getBoundingClientRect();
+                const scrolled = -rect.top;
+                const totalScroll = rect.height - window.innerHeight;
+
+                const startWidth = 320;
+                const startHeight = 380;
+                const endWidth = window.innerWidth * 0.85;
+                const endHeight = window.innerHeight * 0.75;
+
+                if (scrolled >= 0 && scrolled <= totalScroll) {
+                    const progress = scrolled / totalScroll;
+
+                    const infoBarY = -progress * 100;
+                    infoBar.style.transform = `translateY(${infoBarY}%)`;
+
+                    if (progress > 0.1) {
+                        scrollHint.style.opacity = (progress - 0.1) * 2;
+                    } else {
+                        scrollHint.style.opacity = 0;
+                    }
+
+                    const currentWidth = startWidth + (endWidth - startWidth) * progress;
+                    const currentHeight = startHeight + (endHeight - startHeight) * progress;
+
+                    imageContainer.style.width = `${currentWidth}px`;
+                    imageContainer.style.height = `${currentHeight}px`;
+
+                } else if (scrolled < 0) {
+                    infoBar.style.transform = 'translateY(0%)';
+                    scrollHint.style.opacity = 0;
+                    imageContainer.style.width = `${startWidth}px`;
+                    imageContainer.style.height = `${startHeight}px`;
+
+                } else if (scrolled > totalScroll) {
+                    infoBar.style.transform = 'translateY(-100%)';
+                    scrollHint.style.opacity = 1;
+                    imageContainer.style.width = `${endWidth}px`;
+                    imageContainer.style.height = `${endHeight}px`;
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
